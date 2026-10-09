@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import "./premium.css";
+import "./enhancements.css";
 
 export const metadata: Metadata = {
   title: "SplitCircle | Shared expenses, simplified",

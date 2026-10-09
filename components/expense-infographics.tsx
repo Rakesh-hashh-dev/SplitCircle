@@ -5,7 +5,7 @@ import {allocate,balances,simplify,type Ledger} from '@/lib/ledger';
 const money=(v:number)=>new Intl.NumberFormat('en-IN',{style:'currency',currency:'INR',maximumFractionDigits:v%100?2:0}).format(v/100);
 export function AnimatedAmount({value}:{value:number}){
  const [shown,setShown]=useState(value);const previous=useRef(value);
- useEffect(()=>{const from=previous.current;previous.current=value;if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){setShown(value);return}let frame=0;const start=performance.now();const tick=(now:number)=>{const t=Math.min(1,(now-start)/650);setShown(Math.round(from+(value-from)*(1-Math.pow(1-t,3))));if(t<1)frame=requestAnimationFrame(tick)};frame=requestAnimationFrame(tick);return()=>cancelAnimationFrame(frame)},[value]);
+ useEffect(()=>{const from=previous.current;previous.current=value;if(document.documentElement.classList.contains('reduce-motion')||window.matchMedia('(prefers-reduced-motion: reduce)').matches){setShown(value);return}let frame=0;const start=performance.now();const tick=(now:number)=>{const t=Math.min(1,(now-start)/650);setShown(Math.round(from+(value-from)*(1-Math.pow(1-t,3))));if(t<1)frame=requestAnimationFrame(tick)};frame=requestAnimationFrame(tick);return()=>cancelAnimationFrame(frame)},[value]);
  return <span className="animated-value" aria-label={money(value)}><span aria-hidden="true">{money(shown)}</span></span>
 }
 export function ExpenseInfographics({data,month,onInsights,onBalances}:{data:Ledger;month:string;onInsights:()=>void;onBalances:()=>void}){
